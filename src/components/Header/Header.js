@@ -14,12 +14,14 @@ const Header = ({ user, setUser }) => {
   };
   return (
     <div className={classes.Header}>
-      {location.pathname !== "/login" && location.pathname !== "/signup" && (
-        <div className={classes.container}>
-          <Link to="/profile">{user.name}</Link>
-          <Button onClick={logout}>Logout</Button>
-        </div>
-      )}
+      {location.pathname !== "/login" &&
+        location.pathname !== "/signup" &&
+        user.name && (
+          <div className={classes.container}>
+            <Link to="/profile">{user.name}</Link>
+            <Button onClick={logout}>Logout</Button>
+          </div>
+        )}
     </div>
   );
 };
