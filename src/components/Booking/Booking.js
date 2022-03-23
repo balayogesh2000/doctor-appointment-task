@@ -55,6 +55,7 @@ const Booking = () => {
   };
   useEffect(() => {
     (async () => {
+      setLoader(true);
       const doc = await getDoctor(params.id);
       setDoctor(doc.data.data.data);
       const user = await getMe();
@@ -63,6 +64,7 @@ const Booking = () => {
         doctor: doc.data.data.data._id,
         user: user._id,
       });
+      setLoader(false);
       generateSlots(bookings);
     })();
   }, []);

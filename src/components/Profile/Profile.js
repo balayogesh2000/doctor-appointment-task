@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
-
+import { useSetLoader } from "../../context/LoaderContext";
 import classes from "./Profile.module.css";
 import { getAllBookings } from "../../api/bookingApi";
 
@@ -18,9 +18,12 @@ function formatAMPM(date) {
 
 const Profile = ({ user }) => {
   const [bookings, setBookings] = useState([]);
+  const setLoader = useSetLoader();
   useEffect(() => {
     (async () => {
+      setLoader(true);
       const bookings = await getAllBookings({ user: user._id });
+      setLoader(false);
       setBookings(bookings.data.data);
       console.log(bookings.data.data);
     })();
