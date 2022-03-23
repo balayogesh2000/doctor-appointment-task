@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let baseURL = "https://track-online-course.herokuapp.com/api/v1/booking/";
+let baseURL = "https://doctor-appointment-task.herokuapp.com/api/v1/booking/";
 
 if (process.env.NODE_ENV === "development") {
   baseURL = "http://localhost:5000/api/v1/booking/";
