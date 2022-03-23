@@ -1,0 +1,12 @@
+.container {
+  height: 70px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 20px;
+}
+
+.Header a {
+  margin: 0;
+  margin-right: 15px;
+}

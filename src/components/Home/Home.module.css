@@ -1,0 +1,33 @@
+.Home {
+}
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+.searchBar {
+  width: 35%;
+  padding: 20px 0px;
+}
+
+.location {
+}
+
+.searchInput {
+  outline: none;
+  border: 1px solid #aaa;
+}
+
+.searchBtn {
+  outline: none;
+  border: 1px solid #aaa;
+}
+
+.doctorList {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
