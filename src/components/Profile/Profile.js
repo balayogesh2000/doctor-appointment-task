@@ -4,6 +4,7 @@ import { Card } from "react-bootstrap";
 import { useSetLoader } from "../../context/LoaderContext";
 import classes from "./Profile.module.css";
 import { getAllBookings } from "../../api/bookingApi";
+import { getMe } from "../../api/authApi";
 
 function formatAMPM(date) {
   var hours = date.getHours();
@@ -16,12 +17,13 @@ function formatAMPM(date) {
   return strTime;
 }
 
-const Profile = ({ user }) => {
+const Profile = () => {
   const [bookings, setBookings] = useState([]);
   const setLoader = useSetLoader();
   useEffect(() => {
     (async () => {
       setLoader(true);
+      const user = await getMe();
       const bookings = await getAllBookings({ user: user._id });
       setLoader(false);
       setBookings(bookings.data.data);
@@ -47,11 +49,11 @@ const Profile = ({ user }) => {
                 <Card.Title
                   style={{ display: "flex", justifyContent: "space-between" }}
                 >
-                  <span>{item.doctor.name}</span>{" "}
-                  <span style={{ color: "green" }}>₹{item.doctor.fee}</span>
+                  <span>{item.doctor?.name}</span>{" "}
+                  <span style={{ color: "green" }}>₹{item.doctor?.fee}</span>
                 </Card.Title>
                 <Card.Subtitle className="mb-2 text-muted">
-                  {item.doctor.speciality}
+                  {item.doctor?.speciality}
                 </Card.Subtitle>
                 <div style={{ color: "#333" }}>
                   {new Date(item.slot).toDateString() +

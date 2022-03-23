@@ -12,7 +12,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import { getMe } from "./api/authApi";
 import Profile from "./components/Profile/Profile";
 import { ToastContainer } from "react-toastify";
-
+import { AuthProvider } from "./context/AuthContext";
 axios.defaults.headers.common["Authorization"] =
   "Bearer " + localStorage.getItem("token");
 
@@ -41,51 +41,53 @@ const App = () => {
         theme="colored"
       />
       <Header user={user} setUser={setUser} />
-      <LoaderProvider>
-        <Routes>
-          {!user.role && (
-            <Route path="/login" element={<Login setUser={setUser} />} />
-          )}
-          {!user.role && (
-            <Route path="/signup" element={<Signup setUser={setUser} />} />
-          )}
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          {user.role === "admin" && (
+      <AuthProvider>
+        <LoaderProvider>
+          <Routes>
+            {!user.role && (
+              <Route path="/login" element={<Login setUser={setUser} />} />
+            )}
+            {!user.role && (
+              <Route path="/signup" element={<Signup setUser={setUser} />} />
+            )}
             <Route
-              path="/admin"
+              path="/"
               element={
                 <ProtectedRoute>
-                  <AdminPanel />
+                  <Home />
                 </ProtectedRoute>
               }
             />
-          )}
-          <Route
-            path="/doctor/:id"
-            element={
-              <ProtectedRoute>
-                <Booking />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile user={user} />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="*" element={<p>Not found</p>} />
-        </Routes>
-      </LoaderProvider>
+            {user.role === "admin" && (
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <AdminPanel />
+                  </ProtectedRoute>
+                }
+              />
+            )}
+            <Route
+              path="/doctor/:id"
+              element={
+                <ProtectedRoute>
+                  <Booking />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <Profile user={user} />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<p>Not found</p>} />
+          </Routes>
+        </LoaderProvider>
+      </AuthProvider>
     </div>
   );
 };

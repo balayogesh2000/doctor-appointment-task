@@ -13,6 +13,7 @@ export const createBooking = async (body) => {
 
 export const getAllBookings = async (params = {}) => {
   const { data } = await axios.get(baseURL, { params });
+  console.log(params);
   return data;
 };
 
