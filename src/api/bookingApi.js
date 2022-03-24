@@ -31,3 +31,8 @@ export const deleteBooking = async (id) => {
   const data = await axios.delete(baseURL + id);
   return data;
 };
+
+export const sendMail = async (body) => {
+  const res = await axios.post(baseURL + "sendmail", body);
+  return res;
+};

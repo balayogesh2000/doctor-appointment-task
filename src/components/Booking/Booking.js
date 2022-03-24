@@ -4,11 +4,11 @@ import { Form, Card } from "react-bootstrap";
 import { getDoctor } from "../../api/doctorApi";
 
 import classes from "./Booking.module.css";
-import { createBooking, getAllBookings } from "../../api/bookingApi";
+import { createBooking, getAllBookings, sendMail } from "../../api/bookingApi";
 import { getMe } from "../../api/authApi";
 import { useSetLoader } from "../../context/LoaderContext";
 import Modal from "../Modal/Modal";
-import { toast } from "react-toastify";
+import toast from "../../utils/toast";
 
 function tConvert(time) {
   // Check correct time format and split into components
@@ -68,7 +68,7 @@ const Booking = () => {
     })();
   }, []);
 
-  const bookingHandler = async () => {
+  const bookingHandler = async (slot) => {
     setLoader(true);
     await createBooking({
       doctor: doctor._id,
@@ -84,18 +84,17 @@ const Booking = () => {
       user: user._id,
     });
     generateSlots(bookings);
-    setLoader(false);
     setShow(false);
-    navigate("/");
-    toast.success("Slot booked successfully", {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: true,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
+    await sendMail({
+      doctorName: doctor.name,
+      doctorSpeciality: doctor.speciality,
+      userName: user.name,
+      appointmentTime: slot,
     });
+    setLoader(false);
+    toast(
+      `Slot booked successfully and confirmation mail sent to ${user.email} `
+    );
   };
 
   const slotClickHandler = async (time) => {
@@ -167,7 +166,9 @@ const Booking = () => {
         title="Booking Confirmation"
         save="Book"
         cancel="Cancel"
-        onSave={bookingHandler}
+        onSave={() =>
+          bookingHandler(new Date(date).toDateString() + " " + time)
+        }
       >
         <div>
           <p>Doctor : {doctor.name}</p>
