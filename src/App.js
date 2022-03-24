@@ -13,19 +13,13 @@ import { getMe } from "./api/authApi";
 import Profile from "./components/Profile/Profile";
 import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "./context/AuthContext";
+import { useAuthContext } from "./store/auth-context";
+
 axios.defaults.headers.common["Authorization"] =
   "Bearer " + localStorage.getItem("token");
 
 const App = () => {
-  const [user, setUser] = useState({});
-
-  useEffect(() => {
-    (async () => {
-      const user = await getMe();
-      console.log(user);
-      setUser(user);
-    })();
-  }, []);
+  const authCtx = useAuthContext();
   return (
     <div>
       <ToastContainer
@@ -40,15 +34,13 @@ const App = () => {
         pauseOnHover
         theme="colored"
       />
-      <Header user={user} setUser={setUser} />
+      <Header />
       <AuthProvider>
         <LoaderProvider>
           <Routes>
-            {!user.role && (
-              <Route path="/login" element={<Login setUser={setUser} />} />
-            )}
-            {!user.role && (
-              <Route path="/signup" element={<Signup setUser={setUser} />} />
+            {!authCtx.isLoggedIn && <Route path="/login" element={<Login />} />}
+            {!authCtx.isLoggedIn && (
+              <Route path="/signup" element={<Signup />} />
             )}
             <Route
               path="/"
@@ -58,7 +50,7 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            {user.role === "admin" && (
+            {authCtx.user?.role === "admin" && (
               <Route
                 path="/admin"
                 element={
@@ -80,7 +72,7 @@ const App = () => {
               path="/profile"
               element={
                 <ProtectedRoute>
-                  <Profile user={user} />
+                  <Profile />
                 </ProtectedRoute>
               }
             />

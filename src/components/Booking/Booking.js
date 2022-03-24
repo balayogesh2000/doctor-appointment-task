@@ -62,7 +62,6 @@ const Booking = () => {
       setUser(user);
       const bookings = await getAllBookings({
         doctor: doc.data.data.data._id,
-        user: user._id,
       });
       setLoader(false);
       generateSlots(bookings);
@@ -131,7 +130,14 @@ const Booking = () => {
             {["5:00 pm", "5:15 pm", "5:30 pm", "5:45 pm", "6:00 pm"].map(
               (item) => {
                 const isBooked = slots[date]?.includes(item);
-                return isBooked ? (
+                const isExpired =
+                  new Date().getTime() >
+                  new Date(
+                    `${date} ${item.split(" ")[0]}:00 ${item
+                      .split(" ")[1]
+                      .toUpperCase()}`
+                  );
+                return isBooked || isExpired ? (
                   <div
                     style={{
                       background: "lightcoral",

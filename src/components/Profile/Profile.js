@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import { useSetLoader } from "../../context/LoaderContext";
 import classes from "./Profile.module.css";
 import { getAllBookings } from "../../api/bookingApi";
-import { getMe } from "../../api/authApi";
+import { useAuthContext } from "../../store/auth-context";
 
 function formatAMPM(date) {
   var hours = date.getHours();
@@ -20,16 +19,17 @@ function formatAMPM(date) {
 const Profile = () => {
   const [bookings, setBookings] = useState([]);
   const setLoader = useSetLoader();
+  const authCtx = useAuthContext();
   useEffect(() => {
     (async () => {
-      setLoader(true);
-      const user = await getMe();
-      const bookings = await getAllBookings({ user: user._id });
-      setLoader(false);
-      setBookings(bookings.data.data);
-      console.log(bookings.data.data);
+      if (authCtx.user._id) {
+        setLoader(true);
+        const bookings = await getAllBookings({ user: authCtx.user._id });
+        setBookings(bookings.data.data);
+        setLoader(false);
+      }
     })();
-  }, []);
+  }, [authCtx.user._id]);
   return (
     <div className={classes.Profile}>
       <div className="contain">

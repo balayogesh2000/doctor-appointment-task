@@ -1,27 +1,25 @@
 import React from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
 import classes from "./Header.module.css";
+import { useAuthContext } from "../../store/auth-context";
 
-const Header = ({ user, setUser }) => {
+const Header = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const authCtx = useAuthContext();
   const logout = () => {
-    localStorage.removeItem("token");
-    setUser({});
+    authCtx.logout();
     navigate("/login");
   };
   return (
     <div className={classes.Header}>
-      {location.pathname !== "/login" &&
-        location.pathname !== "/signup" &&
-        user.name && (
-          <div className={classes.container}>
-            <Link to="/profile">{user.name}</Link>
-            <Button onClick={logout}>Logout</Button>
-          </div>
-        )}
+      {authCtx.isLoggedIn && (
+        <div className={classes.container}>
+          <Link to="/profile">{authCtx.user?.name}</Link>
+          <Button onClick={logout}>Logout</Button>
+        </div>
+      )}
     </div>
   );
 };

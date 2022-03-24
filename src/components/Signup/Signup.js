@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useNavigate } from "react-router-dom";
 import { signup } from "../../api/authApi";
 import { useSetLoader } from "../../context/LoaderContext";
+import AuthContext from "../../store/auth-context";
 
-function Signup({ setUser }) {
+function Signup() {
   const setLoader = useSetLoader();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -12,6 +13,7 @@ function Signup({ setUser }) {
   const [passwordError, setpasswordError] = useState("");
   const [emailError, setemailError] = useState("");
   const navigate = useNavigate();
+  const authCtx = useContext(AuthContext);
 
   const handleValidation = (event) => {
     let formIsValid = true;
@@ -51,9 +53,7 @@ function Signup({ setUser }) {
         passwordConfirm: password,
       });
       setLoader(false);
-      console.log(res);
-      localStorage.setItem("token", res.data.token);
-      setUser(res.data.user);
+      authCtx.login(res.data.token);
       navigate("/");
     } catch (err) {
       setLoader(false);
