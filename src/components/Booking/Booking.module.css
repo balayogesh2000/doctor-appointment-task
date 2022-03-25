@@ -16,6 +16,13 @@
   padding: 20px;
   border-radius: 10px;
 }
+
+@media (max-width: 600px) {
+  .content {
+    width: 100%;
+  }
+}
+
 .timeSlot {
   display: flex;
   align-items: center;
