@@ -18,7 +18,7 @@ const Home = () => {
     if (search) params.name = search;
     if (speciality) params.speciality = speciality;
     const doctors = await getAllDoctors(params);
-    setDoctors(doctors.data.doc);
+    setDoctors(doctors.data.data);
     setLoader(false);
   };
 
