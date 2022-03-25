@@ -10,36 +10,58 @@ const Home = () => {
   const [doctors, setDoctors] = useState([]);
   const [search, setSearch] = useState("");
   const setLoader = useSetLoader();
-  useEffect(() => {
-    (async () => {
-      setLoader(true);
-      const doctors = await getAllDoctors();
-      setDoctors(doctors.data.doc);
-      setLoader(false);
-    })();
-  }, []);
-  const searchHandler = async (e) => {
-    setSearch(e.target.value);
-    if (e.target.value !== "") {
-      const doctors = await getAllDoctors({ name: e.target.value });
-      setDoctors(doctors.data.doc);
-    } else {
-      const doctors = await getAllDoctors();
-      setDoctors(doctors.data.doc);
-    }
+  const [speciality, setSpeciality] = useState("");
+
+  const fetchDoctors = async () => {
+    setLoader(true);
+    const params = {};
+    if (search) params.name = search;
+    if (speciality) params.speciality = speciality;
+    const doctors = await getAllDoctors(params);
+    setDoctors(doctors.data.doc);
+    setLoader(false);
   };
+
+  useEffect(() => {
+    fetchDoctors();
+  }, []);
+
+  useEffect(() => {
+    fetchDoctors();
+  }, [speciality, search]);
+
+  const resetHandler = () => {
+    setSearch("");
+    setSpeciality("");
+  };
+
   return (
     <div className={classes.Home}>
       <div className={classes.container}>
-        <div className={classes.searchBar}>
-          <input
-            className={classes.searchInput + " form-control"}
-            type="text"
-            placeholder="Search doctors"
-            value={search}
-            onChange={searchHandler}
-          />
-        </div>
+        <input
+          className={classes.searchInput + " form-control"}
+          type="text"
+          placeholder="Search doctors"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <select
+          className={"form-select"}
+          value={speciality}
+          onChange={(e) => setSpeciality(e.target.value)}
+        >
+          <option value="" hidden>
+            select speciality
+          </option>
+          <option value="Gynaecology">Gynaecology</option>
+          <option value="Sexology">Sexology</option>
+          <option value="General physician">General physician</option>
+          <option value="Dermatology">Dermatology</option>
+          <option value="Psychiatry">Psychiatry</option>
+          <option value="Stomach and digestion">Stomach and digestion</option>
+          <option value="Pediatrics">Pediatrics</option>
+        </select>
+        <Button onClick={resetHandler}>Reset</Button>
       </div>
       <div className={classes.doctorList}>
         {doctors.map((item) => (
