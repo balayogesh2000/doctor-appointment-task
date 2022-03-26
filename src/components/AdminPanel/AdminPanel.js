@@ -26,7 +26,7 @@ const Home = () => {
   const fetchDoctors = async () => {
     setLoader(true);
     const doctors = await getAllDoctors();
-    setDoctors(doctors.data.doc);
+    setDoctors(doctors.data.data);
     setLoader(false);
   };
 
