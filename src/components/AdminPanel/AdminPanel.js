@@ -30,6 +30,12 @@ const Home = () => {
     setLoader(false);
   };
 
+  useEffect(() => {
+    (async () => {
+      await fetchDoctors();
+    })();
+  }, []);
+
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoader(true);
@@ -41,22 +47,15 @@ const Home = () => {
     toast("Doctor added successfully");
     fetchDoctors();
   };
-  useEffect(() => {
-    (async () => {
-      setLoader(true);
-      const doctors = await getAllDoctors();
-      setDoctors(doctors.data.doc);
-      setLoader(false);
-    })();
-  }, []);
+
   const searchHandler = async (e) => {
     setSearch(e.target.value);
     if (e.target.value !== "") {
       const doctors = await getAllDoctors({ name: e.target.value });
-      setDoctors(doctors.data.doc);
+      setDoctors(doctors.data.data);
     } else {
       const doctors = await getAllDoctors();
-      setDoctors(doctors.data.doc);
+      setDoctors(doctors.data.data);
     }
   };
   const deleteHandler = async () => {
