@@ -6,6 +6,7 @@ import AdminPanel from "./components/AdminPanel/AdminPanel";
 import { LoaderProvider } from "./context/LoaderContext";
 import Booking from "./components/Booking/Booking";
 import Login from "./components/Login/Login";
+import LoginMobile from "./components/Login/LoginMobile";
 import Signup from "./components/Signup/Signup";
 import SignupMobile from "./components/Signup/SignupMobile";
 import Header from "./components/Header/Header";
@@ -40,6 +41,9 @@ const App = () => {
         <LoaderProvider>
           <Routes>
             {!authCtx.isLoggedIn && <Route path="/login" element={<Login />} />}
+            {!authCtx.isLoggedIn && (
+              <Route path="/login-mobile" element={<LoginMobile />} />
+            )}
             {!authCtx.isLoggedIn && (
               <Route path="/signup" element={<Signup />} />
             )}

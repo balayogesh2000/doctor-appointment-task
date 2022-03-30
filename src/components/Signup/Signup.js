@@ -127,8 +127,8 @@ function Signup() {
                 already a user? <Link to="/login">login</Link> instead
               </p>
               <p style={{ marginTop: "5px" }}>
-                Don't have an email? <Link to="/signup-mobile">signup</Link>{" "}
-                using mobile instead instead
+                Don't have an email? Switch to mobile
+                <Link to="/signup-mobile"> signup</Link> instead
               </p>
             </form>
           </div>

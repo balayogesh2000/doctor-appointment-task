@@ -7,9 +7,9 @@ import AuthContext from "../../store/auth-context";
 
 function Login() {
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
   const [passwordError, setpasswordError] = useState("");
-  const [emailError, setemailError] = useState("");
+  const [mobileError, setmobileError] = useState("");
   const setLoader = useSetLoader();
   const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
@@ -17,12 +17,12 @@ function Login() {
   const handleValidation = (event) => {
     let formIsValid = true;
 
-    if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
+    if (!mobile.match(/^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/)) {
       formIsValid = false;
-      setemailError("Email Not Valid");
+      setmobileError("Mobile Not Valid");
       return false;
     } else {
-      setemailError("");
+      setmobileError("");
       formIsValid = true;
     }
 
@@ -46,7 +46,7 @@ function Login() {
       handleValidation();
       setLoader(true);
       const res = await login({
-        email,
+        mobile,
         password,
       });
       setLoader(false);
@@ -65,20 +65,20 @@ function Login() {
           <div className="col-md-4">
             <form id="loginform" onSubmit={loginSubmit}>
               <div className="form-group">
-                <label>Email address</label>
+                <label>Email mobile</label>
                 <input
-                  type="email"
+                  type="text"
                   className="form-control"
-                  id="EmailInput"
-                  name="EmailInput"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  id="MobileInput"
+                  name="MobileInput"
+                  aria-describedby="mobileHelp"
+                  placeholder="Enter mobile"
+                  value={mobile}
+                  onChange={(event) => setMobile(event.target.value)}
                   required
                 />
-                <small id="emailHelp" className="text-danger form-text">
-                  {emailError}
+                <small id="mobileHelp" className="text-danger form-text">
+                  {mobileError}
                 </small>
               </div>
               <div className="form-group">
@@ -107,8 +107,7 @@ function Login() {
                 Don't have an account? <Link to="/signup">Signup</Link> here
               </p>
               <p style={{ marginTop: "5px" }}>
-                Don't have an email? switch to mobile{" "}
-                <Link to="/login-mobile">login</Link> instead
+                Switch to email <Link to="/login">login</Link>
               </p>
             </form>
           </div>

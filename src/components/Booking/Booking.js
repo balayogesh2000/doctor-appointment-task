@@ -85,20 +85,20 @@ const Booking = () => {
     });
     generateSlots(bookings);
     setShow(false);
-    await sendMail({
-      doctorName: doctor.name,
-      doctorSpeciality: doctor.speciality,
-      userName: user.name,
-      appointmentTime: slot,
-    });
-    setLoader(false);
     if (user.email) {
+      await sendMail({
+        doctorName: doctor.name,
+        doctorSpeciality: doctor.speciality,
+        userName: user.name,
+        appointmentTime: slot,
+      });
       toast(
         `Slot booked successfully and confirmation mail sent to ${user.email} `
       );
     } else {
       toast(`Slot booked successfully`);
     }
+    setLoader(false);
   };
 
   const slotClickHandler = async (time) => {

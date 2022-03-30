@@ -9,21 +9,21 @@ function Signup() {
   const setLoader = useSetLoader();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
   const [passwordError, setpasswordError] = useState("");
-  const [emailError, setemailError] = useState("");
+  const [mobileError, setmobileError] = useState("");
   const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
 
   const handleValidation = (event) => {
     let formIsValid = true;
 
-    if (!email.match(/^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/)) {
+    if (!mobile.match(/^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/)) {
       formIsValid = false;
-      setemailError("Mobile number Not Valid");
+      setmobileError("Mobile number Not Valid");
       return false;
     } else {
-      setemailError("");
+      setmobileError("");
       formIsValid = true;
     }
 
@@ -48,7 +48,7 @@ function Signup() {
       setLoader(true);
       const res = await signup({
         name,
-        mobile: email,
+        mobile,
         password,
         passwordConfirm: password,
       });
@@ -90,12 +90,12 @@ function Signup() {
                   name="MobileInput"
                   aria-describedby="mobileHelp"
                   placeholder="Enter mobile number"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
+                  value={mobile}
+                  onChange={(event) => setMobile(event.target.value)}
                   required
                 />
                 <small id="mobileHelp" className="text-danger form-text">
-                  {emailError}
+                  {mobileError}
                 </small>
               </div>
               <div className="form-group">
@@ -122,6 +122,9 @@ function Signup() {
               </button>
               <p style={{ marginTop: "5px" }}>
                 already a user? <Link to="/login">login</Link> instead
+              </p>
+              <p style={{ marginTop: "5px" }}>
+                Switch to email<Link to="/signup"> signup</Link>
               </p>
             </form>
           </div>
