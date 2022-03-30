@@ -13,7 +13,7 @@ export const login = async (body) => {
 
 export const signup = async (body) => {
   const res = await axios.post(baseURL + "signup", body);
-  return res.data;
+  return res;
 };
 
 export const getMe = async () => {
