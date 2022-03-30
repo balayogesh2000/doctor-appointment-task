@@ -18,9 +18,9 @@ function Signup() {
   const handleValidation = (event) => {
     let formIsValid = true;
 
-    if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
+    if (!email.match(/^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/)) {
       formIsValid = false;
-      setemailError("Email Not Valid");
+      setemailError("Mobile number Not Valid");
       return false;
     } else {
       setemailError("");
@@ -48,7 +48,7 @@ function Signup() {
       setLoader(true);
       const res = await signup({
         name,
-        email,
+        mobile: email,
         password,
         passwordConfirm: password,
       });
@@ -80,24 +80,21 @@ function Signup() {
                   onChange={(event) => setName(event.target.value)}
                   required
                 />
-                <small id="emailHelp" className="text-danger form-text">
-                  {emailError}
-                </small>
               </div>
               <div className="form-group">
-                <label>Email address</label>
+                <label>Mobile Number</label>
                 <input
-                  type="email"
+                  type="text"
                   className="form-control"
-                  id="EmailInput"
-                  name="EmailInput"
-                  aria-describedby="emailHelp"
-                  placeholder="Enter email"
+                  id="MobileInput"
+                  name="MobileInput"
+                  aria-describedby="mobileHelp"
+                  placeholder="Enter mobile number"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   required
                 />
-                <small id="emailHelp" className="text-danger form-text">
+                <small id="mobileHelp" className="text-danger form-text">
                   {emailError}
                 </small>
               </div>
@@ -125,10 +122,6 @@ function Signup() {
               </button>
               <p style={{ marginTop: "5px" }}>
                 already a user? <Link to="/login">login</Link> instead
-              </p>
-              <p style={{ marginTop: "5px" }}>
-                Don't have an email? <Link to="/signup-mobile">signup</Link>{" "}
-                using mobile instead instead
               </p>
             </form>
           </div>

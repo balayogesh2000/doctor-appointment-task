@@ -7,6 +7,7 @@ import { LoaderProvider } from "./context/LoaderContext";
 import Booking from "./components/Booking/Booking";
 import Login from "./components/Login/Login";
 import Signup from "./components/Signup/Signup";
+import SignupMobile from "./components/Signup/SignupMobile";
 import Header from "./components/Header/Header";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import { getMe } from "./api/authApi";
@@ -41,6 +42,9 @@ const App = () => {
             {!authCtx.isLoggedIn && <Route path="/login" element={<Login />} />}
             {!authCtx.isLoggedIn && (
               <Route path="/signup" element={<Signup />} />
+            )}
+            {!authCtx.isLoggedIn && (
+              <Route path="/signup-mobile" element={<SignupMobile />} />
             )}
             <Route
               path="/"

@@ -92,9 +92,13 @@ const Booking = () => {
       appointmentTime: slot,
     });
     setLoader(false);
-    toast(
-      `Slot booked successfully and confirmation mail sent to ${user.email} `
-    );
+    if (user.email) {
+      toast(
+        `Slot booked successfully and confirmation mail sent to ${user.email} `
+      );
+    } else {
+      toast(`Slot booked successfully`);
+    }
   };
 
   const slotClickHandler = async (time) => {
