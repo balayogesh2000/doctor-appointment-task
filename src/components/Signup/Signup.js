@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { signup } from "../../api/authApi";
 import { useSetLoader } from "../../context/LoaderContext";
 import AuthContext from "../../store/auth-context";
+import showToast from "../../utils/toast";
 
 function Signup() {
   const setLoader = useSetLoader();
@@ -57,7 +58,7 @@ function Signup() {
       navigate("/");
     } catch (err) {
       setLoader(false);
-      alert(err.message);
+      showToast(err.response.data.message, true);
     }
   };
 

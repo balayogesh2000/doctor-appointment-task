@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSetLoader } from "../../context/LoaderContext";
 import { login } from "../../api/authApi";
 import AuthContext from "../../store/auth-context";
+import showToast from "../../utils/toast";
 
 function Login() {
   const [password, setPassword] = useState("");
@@ -54,7 +55,7 @@ function Login() {
       navigate("/");
     } catch (err) {
       setLoader(false);
-      alert(err.message);
+      showToast(err.response.data.message, true);
     }
   };
 

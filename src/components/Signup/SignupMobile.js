@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { signup } from "../../api/authApi";
 import { useSetLoader } from "../../context/LoaderContext";
 import AuthContext from "../../store/auth-context";
+import toast from "../../utils/toast";
 
 function Signup() {
   const setLoader = useSetLoader();
@@ -44,7 +45,8 @@ function Signup() {
   const loginSubmit = async (e) => {
     try {
       e.preventDefault();
-      handleValidation();
+      const isValid = handleValidation();
+      if (!isValid) return;
       setLoader(true);
       const res = await signup({
         name,
@@ -57,7 +59,7 @@ function Signup() {
       navigate("/");
     } catch (err) {
       setLoader(false);
-      alert(err.message);
+      toast(err.response.data.message, true);
     }
   };
 
