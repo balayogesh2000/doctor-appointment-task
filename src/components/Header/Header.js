@@ -16,7 +16,9 @@ const Header = () => {
     <div className={classes.Header}>
       {authCtx.isLoggedIn && (
         <div className={classes.container}>
-          <Link to="/profile">{authCtx.user?.name}</Link>
+          <Link to={authCtx.user?.role === "admin" ? "/admin" : "/profile"}>
+            {`${authCtx.user?.name} (${authCtx.user?.role})`}{" "}
+          </Link>
           <Button onClick={logout}>Logout</Button>
         </div>
       )}

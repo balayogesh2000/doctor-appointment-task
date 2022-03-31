@@ -22,6 +22,8 @@ const Home = () => {
   const [speciality, setSpeciality] = useState("Gynaecology");
   const [id, setId] = useState("");
   const [doctor, setDoctor] = useState({});
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const fetchDoctors = async () => {
     setLoader(true);
@@ -37,15 +39,28 @@ const Home = () => {
   }, []);
 
   const submitHandler = async (e) => {
-    e.preventDefault();
-    setLoader(true);
-    await createDoctor({ name, speciality, fee });
-    setLoader(false);
-    setName("");
-    setFee("500");
-    setSpeciality("Gynaecology");
-    toast("Doctor added successfully");
-    fetchDoctors();
+    try {
+      e.preventDefault();
+      setLoader(true);
+      await createDoctor({
+        name,
+        email,
+        password,
+        passwordConfirm: password,
+        speciality,
+        fee,
+        role: "doctor",
+      });
+      setLoader(false);
+      setName("");
+      setFee("500");
+      setSpeciality("Gynaecology");
+      toast("Doctor added successfully");
+      fetchDoctors();
+    } catch (err) {
+      toast(err.response.data.message, true);
+      setLoader(false);
+    }
   };
 
   const searchHandler = async (e) => {
@@ -97,6 +112,26 @@ const Home = () => {
             placeholder="Doctor name"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="email"
+            className="form-control"
+            id="EmailInput"
+            name="EmailInput"
+            aria-describedby="emailHelp"
+            placeholder="Enter email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
+          />
+          <input
+            type="password"
+            className="form-control"
+            id="exampleInputPassword1"
+            placeholder="Password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
             required
           />
           <input

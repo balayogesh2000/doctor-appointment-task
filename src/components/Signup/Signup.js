@@ -45,7 +45,8 @@ function Signup() {
   const loginSubmit = async (e) => {
     try {
       e.preventDefault();
-      handleValidation();
+      const isValid = handleValidation();
+      if (!isValid) return;
       setLoader(true);
       const res = await signup({
         name,
@@ -55,6 +56,8 @@ function Signup() {
       });
       setLoader(false);
       authCtx.login(res.data.token);
+      if (res.data.user.role === "admin") return navigate("/admin");
+      if (res.data.user.role === "doctor") return navigate("/profile");
       navigate("/");
     } catch (err) {
       setLoader(false);

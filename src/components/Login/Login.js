@@ -52,6 +52,8 @@ function Login() {
       });
       setLoader(false);
       authCtx.login(res.data.token);
+      if (res.data.user.role === "admin") return navigate("/admin");
+      if (res.data.user.role === "doctor") return navigate("/profile");
       navigate("/");
     } catch (err) {
       setLoader(false);

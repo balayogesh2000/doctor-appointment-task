@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
 import Home from "./components/Home/Home";
 import AdminPanel from "./components/AdminPanel/AdminPanel";
@@ -58,7 +58,7 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            {authCtx.user?.role === "admin" && (
+            {authCtx?.user?.role === "admin" && (
               <Route
                 path="/admin"
                 element={
@@ -68,22 +68,27 @@ const App = () => {
                 }
               />
             )}
-            <Route
-              path="/doctor/:id"
-              element={
-                <ProtectedRoute>
-                  <Booking />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <Profile />
-                </ProtectedRoute>
-              }
-            />
+            {authCtx?.user?.role === "user" && (
+              <Route
+                path="/doctor/:id"
+                element={
+                  <ProtectedRoute>
+                    <Booking />
+                  </ProtectedRoute>
+                }
+              />
+            )}
+            {(authCtx?.user?.role === "user" ||
+              authCtx?.user?.role === "doctor") && (
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+            )}
             <Route path="*" element={<p>Not found</p>} />
           </Routes>
         </LoaderProvider>
