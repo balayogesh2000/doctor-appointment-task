@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Card } from "react-bootstrap";
+import { Card, Table } from "react-bootstrap";
 import { useSetLoader } from "../../context/LoaderContext";
 import classes from "./Profile.module.css";
 import { getAllBookings, deleteBooking } from "../../api/bookingApi";
 import { useAuthContext } from "../../store/auth-context";
 import cancelIcon from "../../assets/img/close.png";
+import deleteIcon from "../../assets/img/trash.png";
 import showToast from "../../utils/toast";
 
 function formatAMPM(date) {
@@ -56,44 +57,53 @@ const Profile = () => {
       <div className="contain">
         <h3>My Appointments</h3>
         <div className={classes.doctorList}>
-          {bookings.map((item) => (
-            <Card
-              style={{
-                width: "18rem",
-                background:
-                  new Date(item.slot).getTime() < new Date().getTime()
-                    ? "lightcoral"
-                    : "lightgreen",
-              }}
-            >
-              <Card.Body>
-                <Card.Title
-                  style={{ display: "flex", justifyContent: "space-between" }}
-                >
-                  <span>
-                    {authCtx.user.role === "user"
-                      ? item.doctor?.name
-                      : item?.user?.name}
-                  </span>{" "}
-                  <span style={{ color: "green" }}>₹{item.doctor?.fee}</span>
-                </Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
-                  {item.doctor?.speciality}
-                </Card.Subtitle>
-                <div style={{ color: "#333" }}>
-                  {new Date(item.slot).toDateString() +
-                    " " +
-                    formatAMPM(new Date(item.slot))}
-                  <img
-                    style={{ marginLeft: "20px", cursor: "pointer" }}
-                    src={cancelIcon}
-                    alt="cancel"
-                    onClick={() => cancelHandler(item._id)}
-                  />
-                </div>
-              </Card.Body>
-            </Card>
-          ))}
+          <Table bordered responsive>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Doctor Name</th>
+                <th>Patient Name</th>
+                <th>Speciality</th>
+                <th>Consultation Fee</th>
+                <th>Booking Date & time</th>
+                <th>Delete Booking</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.map((item, idx) => {
+                return (
+                  <tr
+                    style={{
+                      width: "18rem",
+                      background:
+                        new Date(item.slot).getTime() < new Date().getTime()
+                          ? "lightcoral"
+                          : "lightgreen",
+                    }}
+                  >
+                    <td>{idx + 1}</td>
+                    <td>{item.doctor?.name}</td>
+                    <td>{item.user?.name}</td>
+                    <td>{item.doctor?.speciality}</td>
+                    <td>{item.doctor?.fee}</td>
+                    <td>
+                      {new Date(item.slot).toDateString() +
+                        " " +
+                        formatAMPM(new Date(item.slot))}
+                    </td>
+                    <td>
+                      <img
+                        style={{ marginLeft: "20px", cursor: "pointer" }}
+                        src={deleteIcon}
+                        alt="cancel"
+                        onClick={() => cancelHandler(item._id)}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
         </div>
       </div>
     </div>

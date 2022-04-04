@@ -1,9 +1,9 @@
-.doctorList {
+/* .doctorList {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   justify-items: center;
-}
+} */
 
 @media (max-width: 600px) {
   .doctorList {
